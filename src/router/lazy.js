@@ -24,188 +24,102 @@ export default new Router({
       invisible: true,
       children: [
         {
-          path: '/dashboard',
-          name: 'Dashboard',
+          path: '/用户管理',
+          name: '用户管理',
+          role: [1, 2, 3],
           component: RouteView,
           icon: 'dashboard',
           children: [
             {
-              path: '/dashboard/workplace',
-              name: '工作台',
-              component: () => import('@/pages/dashboard/WorkPlace'),
+              path: '/user/userinfo',
+              name: '个人信息',
+              role: [1, 2, 3],
+              component: () => import('@/pages/user/UserInfo'),
               icon: 'none'
             },
             {
-              path: '/dashboard/analysis',
-              name: '分析页',
-              component: () => import('@/pages/dashboard/Analysis'),
+              path: '/user/list',
+              name: '用户列表',
+              role: [1],
+              component: () => import('@/pages/user/List'),
               icon: 'none'
             }
           ]
         },
         {
-          path: '/form',
-          name: '表单页',
-          component: PageView,
-          icon: 'form',
-          children: [
-            {
-              path: '/form/basic',
-              name: '基础表单',
-              component: () => import('@/pages/form/BasicForm'),
-              icon: 'none'
-            },
-            {
-              path: '/form/step',
-              name: '分步表单',
-              component: () => import('@/pages/form/stepForm/StepForm'),
-              icon: 'none'
-            },
-            {
-              path: '/form/advanced',
-              name: '高级表单',
-              component: () => import('@/pages/form/advancedForm/AdvancedForm'),
-              icon: 'none'
-            }
-          ]
-        },
-        {
-          path: '/list',
-          name: '列表页',
-          component: PageView,
-          icon: 'table',
-          children: [
-            {
-              path: '/list/query',
-              name: '查询表格',
-              component: () => import('@/pages/list/QueryList'),
-              icon: 'none'
-            },
-            {
-              path: '/list/primary',
-              name: '标准列表',
-              component: () => import('@/pages/list/StandardList'),
-              icon: 'none'
-            },
-            {
-              path: '/list/card',
-              name: '卡片列表',
-              component: () => import('@/pages/list/CardList'),
-              icon: 'none'
-            },
-            {
-              path: '/list/search',
-              name: '搜索列表',
-              component: () => import('@/pages/list/search/SearchLayout'),
-              icon: 'none',
-              children: [
-                {
-                  path: '/list/search/article',
-                  name: '文章',
-                  component: () => import('@/pages/list/search/ArticleList'),
-                  icon: 'none'
-                },
-                {
-                  path: '/list/search/application',
-                  name: '应用',
-                  component: () => import('@/pages/list/search/ApplicationList'),
-                  icon: 'none'
-                },
-                {
-                  path: '/list/search/project',
-                  name: '项目',
-                  component: () => import('@/pages/list/search/ProjectList'),
-                  icon: 'none'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          path: '/detail',
-          name: '详情页',
-          icon: 'profile',
+          path: '/成绩管理',
+          name: '成绩管理',
+          role: [2, 3],
           component: RouteView,
+          icon: 'dashboard',
           children: [
             {
-              path: '/detail/basic',
-              name: '基础详情页',
-              icon: 'none',
-              component: () => import('@/pages/detail/BasicDetail')
+              path: '/score/scorelist',
+              name: '成绩列表',
+              role: [2, 3],
+              component: () => import('@/pages/score/ScoreList'),
+              icon: 'none'
             },
             {
-              path: '/detail/advanced',
-              name: '高级详情页',
-              icon: 'none',
-              component: () => import('@/pages/detail/AdvancedDetail')
+              path: '/score/scoreentry',
+              name: '成绩录入',
+              role: [2],
+              component: () => import('@/pages/score/ScoreEntry'),
+              icon: 'none'
             }
           ]
         },
         {
-          path: '/result',
-          name: '结果页',
-          icon: 'check-circle-o',
-          component: PageView,
-          children: [
-            {
-              path: '/result/success',
-              name: '成功',
-              icon: 'none',
-              component: () => import('@/pages/result/Success')
-            },
-            {
-              path: '/result/error',
-              name: '失败',
-              icon: 'none',
-              component: () => import('@/pages/result/Error')
-            }
-          ]
-        },
-        {
-          path: '/exception',
-          name: '异常页',
-          icon: 'warning',
+          path: '/教学评估',
+          name: '教学评估',
+          role: [1, 3],
           component: RouteView,
+          icon: 'dashboard',
           children: [
             {
-              path: '/exception/404',
-              name: '404',
-              icon: 'none',
-              component: () => import('@/pages/exception/404')
-            },
-            {
-              path: '/exception/403',
-              name: '403',
-              icon: 'none',
-              component: () => import('@/pages/exception/403')
-            },
-            {
-              path: '/exception/500',
-              name: '500',
-              icon: 'none',
-              component: () => import('@/pages/exception/500')
+              path: '/evaluation/evaluationscreen',
+              name: '教学评估',
+              role: [3],
+              component: () => import('@/pages/evaluation/EvaluationScreen'),
+              icon: 'none'
+            }, {
+              path: '/evaluation/evaluationresult',
+              name: '教评结果',
+              role: [1],
+              component: () => import('@/pages/evaluation/EvaluationResult'),
+              icon: 'none'
             }
           ]
         },
         {
-          path: '/components',
-          redirect: '/components/taskcard',
-          name: '小组件',
-          icon: 'appstore-o',
-          component: PageView,
+          path: '/课程管理',
+          name: '课程管理',
+          role: [1, 2, 3],
+          component: RouteView,
+          icon: 'dashboard',
           children: [
             {
-              path: '/components/taskcard',
-              name: '任务卡片',
-              icon: 'none',
-              component: () => import('@/pages/components/TaskCard')
+              path: '/course/coursemanage',
+              name: '所有课程',
+              role: [1, 2],
+              component: () => import('@/pages/course/CourseManage'),
+              icon: 'none'
             },
             {
-              path: '/components/palette',
-              name: '颜色复选框',
-              icon: 'none',
-              component: () => import('@/pages/components/Palette')
-            }
+              path: '/course/courselist',
+              name: '查看课程',
+              role: [3],
+              component: () => import('@/pages/course/CourseList'),
+              icon: 'none'
+            },
+            {
+              path: '/course/selectCourse',
+              name: '选课',
+              role: [3],
+              component: () => import('@/pages/course/SelectCourse'),
+              icon: 'none'
+            },
+
           ]
         }
       ]

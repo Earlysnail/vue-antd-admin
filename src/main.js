@@ -6,11 +6,13 @@ import router from './router/lazy'
 import 'ant-design-vue/dist/antd.css'
 import Antd from 'ant-design-vue'
 import Viser from 'viser-vue'
+import * as Request from './api/index'
 import axios from 'axios'
-import '@/mock'
+// import '@/mock'
 import store from './store'
 import PouchDB from 'pouchdb'
 
+Vue.prototype.$Request = Request
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 Vue.use(Viser)
@@ -23,10 +25,7 @@ new Vue({
   store,
   components: { App },
   template: '<App/>',
-  mounted () {
-    var db = new PouchDB('admindb')
-    db.get('currUser').then(doc => {
-      this.$store.commit('account/setuser', doc.user)
-    })
+  mounted() {
+   
   }
 })

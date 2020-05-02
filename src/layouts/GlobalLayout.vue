@@ -1,17 +1,29 @@
 <template>
   <a-layout>
     <drawer v-if="isMobile" :openDrawer="collapsed" @change="onDrawerChange">
-      <sider-menu :theme="theme" :menuData="menuData" :collapsed="false" :collapsible="false" @menuSelect="onMenuSelect"/>
+      <sider-menu
+        :theme="theme"
+        :menuData="menuData"
+        :collapsed="false"
+        :collapsible="false"
+        @menuSelect="onMenuSelect"
+      />
     </drawer>
-    <sider-menu :theme="theme" v-else-if="layout === 'side'" :menuData="menuData" :collapsed="collapsed" :collapsible="true" />
-    <drawer :open-drawer="showSetting" placement="right"  @change="onSettingDrawerChange">
+    <sider-menu
+      :theme="theme"
+      v-else-if="layout === 'side'"
+      :menuData="menuData"
+      :collapsed="collapsed"
+      :collapsible="true"
+    />
+    <drawer :open-drawer="showSetting" placement="right" @change="onSettingDrawerChange">
       <div class="setting" slot="handler">
         <a-icon :type="showSetting ? 'close' : 'setting'" />
       </div>
       <setting />
     </drawer>
     <a-layout>
-      <global-header :menuData="menuData" :collapsed="collapsed" @toggleCollapse="toggleCollapse"/>
+      <global-header :menuData="menuData" :collapsed="collapsed" @toggleCollapse="toggleCollapse" />
       <a-layout-content :style="{minHeight: minHeight, margin: '24px 24px 0'}">
         <slot></slot>
       </a-layout-content>
@@ -23,73 +35,96 @@
 </template>
 
 <script>
-import GlobalHeader from './GlobalHeader'
-import GlobalFooter from './GlobalFooter'
-import Drawer from '../components/tool/Drawer'
-import SiderMenu from '../components/menu/SiderMenu'
-import Setting from '../components/setting/Setting'
+import GlobalHeader from "./GlobalHeader";
+import GlobalFooter from "./GlobalFooter";
+import Drawer from "../components/tool/Drawer";
+import SiderMenu from "../components/menu/SiderMenu";
+import Setting from "../components/setting/Setting";
 
-const minHeight = window.innerHeight - 64 - 24 - 122
+const minHeight = window.innerHeight - 64 - 24 - 122;
 
-let menuData = []
+let menuData = [];
 
 export default {
-  name: 'GlobalLayout',
-  components: {Setting, SiderMenu, Drawer, GlobalFooter, GlobalHeader},
-  data () {
+  name: "GlobalLayout",
+  components: { Setting, SiderMenu, Drawer, GlobalFooter, GlobalHeader },
+  data() {
     return {
-      minHeight: minHeight + 'px',
+      minHeight: minHeight + "px",
       collapsed: false,
       menuData: menuData,
       showSetting: false
-    }
+    };
   },
   computed: {
-    isMobile () {
-      return this.$store.state.setting.isMobile
+    isMobile() {
+      return this.$store.state.setting.isMobile;
     },
-    theme () {
-      return this.$store.state.setting.theme
+    theme() {
+      return this.$store.state.setting.theme;
     },
-    layout () {
-      return this.$store.state.setting.layout
+    layout() {
+      return this.$store.state.setting.layout;
     },
-    linkList () {
-      return this.$store.state.setting.footerLinks
+    linkList() {
+      return this.$store.state.setting.footerLinks;
     },
-    copyright () {
-      return this.$store.state.setting.copyright
+    copyright() {
+      return this.$store.state.setting.copyright;
     }
   },
   methods: {
-    toggleCollapse () {
-      this.collapsed = !this.collapsed
+    toggleCollapse() {
+      this.collapsed = !this.collapsed;
     },
-    onDrawerChange (show) {
-      this.collapsed = show
+    onDrawerChange(show) {
+      this.collapsed = show;
     },
-    onMenuSelect () {
-      this.toggleCollapse()
+    onMenuSelect() {
+      this.toggleCollapse();
     },
-    onSettingDrawerChange (val) {
-      this.showSetting = val
+    onSettingDrawerChange(val) {
+      this.showSetting = val;
     }
   },
-  beforeCreate () {
-    menuData = this.$router.options.routes.find((item) => item.path === '/').children
+  beforeCreate() {
+    console.log("menu", this.$router.options.routes);
+    let menus = this.$router.options.routes.find(item => item.path === "/")
+      .children;
+    console.log("menus", menus);
+    let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    console.log("user", userInfo);
+    let role = userInfo.role;
+    let newMenu = [];
+    let newItem = [];
+    menus.forEach(item => {
+      if (item.role.indexOf(role) > -1) {
+        item.children.forEach(item2 => {
+          if (item2.role.indexOf(role) > -1) {
+            newItem.push(item2);
+          }
+        });
+        item.children = newItem
+        newMenu.push(item);
+      }
+      newItem = [];
+    });
+    console.log("newMenu", newMenu);
+
+    menuData = newMenu;
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-  .setting{
-    background-color: #1890ff;
-    color: #fff;
-    border-radius: 5px 0 0 5px;
-    line-height: 40px;
-    font-size: 22px;
-    width: 40px;
-    height: 40px;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-  }
+.setting {
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 5px 0 0 5px;
+  line-height: 40px;
+  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+}
 </style>

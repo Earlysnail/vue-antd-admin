@@ -87,7 +87,8 @@ export default {
   methods: {
     onColorChange (values, colors) {
       if (colors.length > 0) {
-        this.$message.info(`您选择了主题色 ${colors}`)
+        // this.$message.info(`您选择了主题色 ${colors}`)
+        this.$message.info(`欢迎登录教务管理系统`)
       }
     },
     setTheme (values) {

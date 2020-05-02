@@ -23,8 +23,8 @@ export default {
   },
   methods: {
     enterSearchMode () {
-      this.searchMode = true
-      setTimeout(() => this.$refs.input.focus(), 300)
+      // this.searchMode = true
+      // setTimeout(() => this.$refs.input.focus(), 300)
     },
     leaveSearchMode () {
       this.searchMode = false

@@ -2,7 +2,7 @@
   <a-layout-header :class="[theme, 'global-header']">
     <div :class="['global-header-wide', layout]">
       <router-link v-if="isMobile || layout === 'head'" to="/" :class="['logo', isMobile ? null : 'pc', theme]">
-        <img width="32" src="static/img/vue-antd-logo.png" />
+        <img width="32" src="@/assets/kd_logo.png" />
         <h1 v-if="!isMobile">{{systemName}}</h1>
       </router-link>
       <a-divider v-if="isMobile" type="vertical" />
@@ -17,7 +17,7 @@
               <a-icon type="question-circle-o" />
             </a>
           </a-tooltip>
-          <header-notice class="header-item"/>
+          <!-- <header-notice class="header-item"/> -->
           <header-avatar class="header-item"/>
       </div>
     </div>
