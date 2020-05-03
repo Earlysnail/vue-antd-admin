@@ -81,11 +81,15 @@ export default {
         selectCourseId.push(this.courseData[this.selectedRowKeys[i]].id);
       }
       console.log("选中课程ID", selectCourseId);
+
       this.$Request.selectCourse(selectCourseId).then(res => {
         if (res.code == "2001") {
           console.log("添加成功", res);
+          this.$message.success("添加成功");
+          this.$router.push("/course/courselist");
         } else {
           console.log("添加失败", res.msg);
+          this.$message.success("添加失败");
         }
         this.loading = false;
       });

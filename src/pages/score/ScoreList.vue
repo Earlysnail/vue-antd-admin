@@ -34,7 +34,7 @@ const courseColumns = [
     title: "成绩",
     dataIndex: "score_x",
     key: "score_x"
-  },
+  }
 ];
 
 export default {
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       courseColumns,
-      courseData: [],
+      courseData: []
     };
   },
   components: { HeadInfo },
@@ -52,9 +52,10 @@ export default {
   methods: {
     getSelectCourse() {
       this.$Request.getSelectCourse().then(res => {
-        let course = []
+        let course = [];
         res.result.forEach(item => {
-          course.push(item.courseInfo)
+          item.courseInfo.score_x = item.score;
+          course.push(item.courseInfo);
         });
         this.courseData = course;
         console.log("所选课程", res);

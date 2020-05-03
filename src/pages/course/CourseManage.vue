@@ -1,7 +1,12 @@
 <template>
   <div>
     <a-card style="margin-top: 24px" :bordered="false" title="课程表">
-      <a-button v-if="userInfo.role == 1" @click="showModal" type="primary" style="margin-bottom:10px;">添加课程</a-button>
+      <a-button
+        v-if="userInfo.role == 1"
+        @click="showModal"
+        type="primary"
+        style="margin-bottom:10px;"
+      >添加课程</a-button>
       <a-modal
         v-model="visible"
         title="添加课程"
@@ -109,8 +114,23 @@ export default {
     },
     getAllCourse() {
       this.$Request.getCourse().then(res => {
-        this.courseData = res.result;
-        console.log("所有课程", res);
+        let courseData = [];
+        if (res.code == 2001) {
+          let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+          console.log(userInfo);
+          if (userInfo.role == 2) {
+            courseData = res.result;
+            for (let i = 0; i < courseData.length; i++) {
+              courseData[i].teacherInfo = userInfo
+            }
+          } else {
+            courseData = res.result;
+          }
+          this.courseData = courseData;
+          this.console.log("所有课程", res, courseData);
+        } else {
+          this.$message.error("获取课程出错");
+        }
       });
     },
     addCourse() {
@@ -119,8 +139,18 @@ export default {
       this.$Request.addCourse(courseInfo).then(res => {
         if (res.code == "2001") {
           console.log("添加成功", res);
+          this.$message.success("添加成功");
+          this.form = {
+            courseName: "",
+            courseBuilding: "",
+            teacherInfo: {
+              tustId: ""
+            },
+            score: ""
+          };
         } else {
           console.log("添加失败", res.msg);
+          this.$message.error("添加失败");
         }
         this.visible = false;
         this.getAllCourse();

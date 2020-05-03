@@ -71,7 +71,7 @@ export default {
     };
   },
   components: { HeadInfo },
-  created() {
+  activated() {
     this.getSelectCourse();
   },
   methods: {

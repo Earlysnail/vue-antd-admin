@@ -14,10 +14,7 @@
       cancel-text="取消"
     >
       <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-        <a-form-model-item label="评分">
-          <a-input v-model="form.name" />
-        </a-form-model-item>
-        <a-form-model-item label="评论">
+        <a-form-model-item label="写教评">
           <a-input v-model="form.desc" type="textarea" />
         </a-form-model-item>
       </a-form-model>
@@ -50,11 +47,6 @@ const courseColumns = [
     key: "score"
   },
   {
-    title: "教学评分",
-    dataIndex: "result",
-    key: "result"
-  },
-  {
     title: "评教",
     key: "operation",
     fixed: "right",
@@ -71,7 +63,6 @@ export default {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
       form: {
-        name: "",
         desc: ""
       },
       selectCourse: {},
@@ -106,10 +97,16 @@ export default {
     evaluation() {
       let evaluation = {
         selectCourseLog: { id: this.selectCourse.id },
-        content: '2121'
+        content: this.form.desc
       };
       this.$Request.evaluation(evaluation).then(res => {
-        console.log("评教结果", res);
+        if (res.code == "2001") {
+          console.log("评教结果", res);
+          this.$message.success("评教成功");
+        } else {
+          console.log("添加失败", res.msg);
+          this.$message.error("添加失败");
+        }
       });
     },
     getSelectCourse() {
@@ -121,8 +118,7 @@ export default {
         this.courseData = course;
         console.log("所选课程", res);
       });
-    },
-   
+    }
   }
 };
 </script>

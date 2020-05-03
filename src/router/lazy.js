@@ -56,7 +56,7 @@ export default new Router({
             {
               path: '/score/scorelist',
               name: '成绩列表',
-              role: [2, 3],
+              role: [3],
               component: () => import('@/pages/score/ScoreList'),
               icon: 'none'
             },
@@ -113,7 +113,7 @@ export default new Router({
               icon: 'none'
             },
             {
-              path: '/course/selectCourse',
+              path: '/course/selectcourse',
               name: '选课',
               role: [3],
               component: () => import('@/pages/course/SelectCourse'),

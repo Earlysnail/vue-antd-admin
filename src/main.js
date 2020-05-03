@@ -5,15 +5,14 @@ import App from './App'
 import router from './router/lazy'
 import 'ant-design-vue/dist/antd.css'
 import Antd from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import Viser from 'viser-vue'
 import * as Request from './api/index'
-import axios from 'axios'
 // import '@/mock'
 import store from './store'
-import PouchDB from 'pouchdb'
 
 Vue.prototype.$Request = Request
-Vue.prototype.$axios = axios
+Vue.prototype.$message = message
 Vue.config.productionTip = false
 Vue.use(Viser)
 Vue.use(Antd)

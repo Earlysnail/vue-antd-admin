@@ -99,7 +99,7 @@ export function evaluation(evaluation) {
 }
 
 export function writeScore(data) {
-  console.log('评教', data)
+  console.log('录入成绩', data)
   return Request({
     url: '/selectCourse/postCourseScore',
     method: 'post',

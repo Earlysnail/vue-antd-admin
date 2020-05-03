@@ -2,7 +2,8 @@ import axios from 'axios'
 import store from '@/store'
 import { message } from 'ant-design-vue'
 const service = axios.create({
-  baseURL: 'http://192.168.199.245:8080',
+  // baseURL: 'http://192.168.199.245:8080',
+  baseURL: 'http://aliyun.surine.cn:8082',
   // baseURL: 'http://192.168.199.169:8080',
   timeout: 100000,
 })
@@ -24,15 +25,14 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== 2001) {
-      message.error(`请求失败`)
-      return Promise.reject(new Error(res.msg || 'Error'))
+      console.log('出错啦' + res.msg)
+      return Promise.reject(new Error(res.msg || '出错啦'))
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error)
-    message.error(error)
+    console.log('出错啦' + error)
     return Promise.reject(error)
   }
 )

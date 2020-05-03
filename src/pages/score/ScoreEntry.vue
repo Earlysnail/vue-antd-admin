@@ -4,23 +4,7 @@
       <a-form layout="horizontal">
         <div>
           <a-row>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="教授课程" :labelCol="{span: 5}" :wrapperCol="{span: 18, offset: 1}">
-                <a-select placeholder="请选择课程" @change="(e)=>handleSelect(e,'course')">
-                  <a-select-option value="计算机网络">计算机网络</a-select-option>
-                  <a-select-option value="操作系统">操作系统</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="授课班级" :labelCol="{span: 5}" :wrapperCol="{span: 18, offset: 1}">
-                <a-select placeholder="请选择班级" @change="(e)=>handleSelect(e,'class')">
-                  <a-select-option value="151044班">151044班</a-select-option>
-                  <a-select-option value="151043班">151043班</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-button @click="changeType" style="float:right;margin-right:100px;">返回</a-button>
+            <a-button @click="changeType" type="primary" style="margin-right:100px;">返回课程列表</a-button>
           </a-row>
         </div>
       </a-form>
@@ -211,7 +195,6 @@ export default {
             this.changeType();
             this.getCourseStudent(record);
             console.log(record, "record");
-            
           }
         }
       };
@@ -226,13 +209,31 @@ export default {
     },
     getCourseStudent(item) {
       this.$Request.getCourseStudent(item.id).then(res => {
-        let courseStudent = res.result;
-        courseStudent.forEach(element => {
-          element.course = item.courseName;
-          element.role = item.role == 1 ? '教务管理员' : (item.role == 2 ? '教师' : '学生')
-          element.sex = item.sex == 1 ? '男' : '女'
-          element.editable = false;
-          element.score = 0;
+        let courseStudent = [];
+        let courseItem = {};
+        res.result.forEach(element => {
+          courseItem = {}
+          courseItem.course = item.courseName;
+          courseItem.role =
+            element.studentInfo.role == 1
+              ? "教务管理员"
+              : element.studentInfo.role == 2
+              ? "教师"
+              : element.studentInfo.role == 3
+              ? "学生"
+              : "";
+          courseItem.sex = element.studentInfo.sex == 1 ? "男" : "女";
+          courseItem.editable = false;
+          courseItem.birthday = element.studentInfo.birthday;
+          courseItem.depart = element.studentInfo.depart;
+          courseItem.email = element.studentInfo.email;
+          courseItem.name = element.studentInfo.name;
+          courseItem.phoneNumber = element.studentInfo.phoneNumber;
+          courseItem.tustId = element.studentInfo.tustId;
+          courseItem.score = element.score;
+          courseItem.id = element.id;
+          courseStudent.push(courseItem);
+          
         });
         this.courseStudent = courseStudent;
 
@@ -272,7 +273,13 @@ export default {
           score: target.score
         })
         .then(res => {
-          console.log("录入成绩", res);
+          if(res.code == "2001"){
+            console.log("录入成绩", res);
+            this.$message.success("录入成功")
+          }else{
+             console.log("录入失败", res);
+             this.$message.error("录入失败")
+          }
         });
     },
     toggle(key) {

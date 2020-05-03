@@ -57,9 +57,9 @@
       <div slot="extra">
         <a-radio-group v-model="selectRole" @change="onChange">
           <a-radio-button value="0">全部</a-radio-button>
-          <a-radio-button value="1">管理员</a-radio-button>
-          <a-radio-button value="2">教师</a-radio-button>
-          <a-radio-button value="3">学生</a-radio-button>
+          <a-radio-button value="管理员">管理员</a-radio-button>
+          <a-radio-button value="教师">教师</a-radio-button>
+          <a-radio-button value="学生">学生</a-radio-button>
         </a-radio-group>
         <!-- <a-input-search v-model="selectItem" style="margin-left: 16px; width: 272px;" /> -->
       </div>
@@ -153,7 +153,7 @@ export default {
       },
       selectRole: "0",
       allData: [],
-      selectItem:''
+      selectItem: ""
     };
   },
   components: {},
@@ -167,8 +167,22 @@ export default {
     getAllUser() {
       this.$Request.getUser().then(res => {
         console.log("所有用户", res);
-        this.dataSource = res.result;
-        this.allData = res.result;
+        let dataSource = [];
+        res.result.forEach(item => {
+          item.sex = item.sex == 1 ? "男" : item.sex == 0 ? "女" : "";
+          item.role =
+            item.role == 1
+              ? "管理员"
+              : item.role == 2
+              ? "教师"
+              : item.role == 3
+              ? "学生"
+              : "";
+          dataSource.push(item);
+        });
+        this.dataSource = dataSource;
+
+        this.allData = dataSource;
       });
     },
     addUser() {
@@ -178,8 +192,20 @@ export default {
       this.$Request.register(userInfo).then(res => {
         if (res.code == "2001") {
           console.log("注册成功", res);
+          this.$message.success("注册成功")
+          this.form = {
+            name: "",
+            sex: "",
+            tustId: "",
+            birthday: undefined,
+            email: "",
+            phoneNumber: "",
+            depart: "",
+            password: ""
+          };
         } else {
           console.log("注册失败", res.msg);
+          this.$message.error("注册失败")
         }
         this.visible = false;
         this.getAllUser();
