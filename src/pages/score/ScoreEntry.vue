@@ -17,25 +17,25 @@
             slot-scope="text, record"
           >
             <a-input
-              :key="col"
+              :key="record.id"
               v-if="record.editable && col == 'score'"
               style="margin: -5px 0"
               :value="text"
               :placeholder="columns[i].title"
-              @change="e => handleChange(e.target.value, record.key, col)"
+              @change="e => handleChange(e.target.value, record.id, col)"
             />
             <template v-else>{{text}}</template>
           </template>
           <template slot="operation" slot-scope="text, record">
             <template v-if="record.editable">
               <span>
-                <a @click="saveRow(record.key)">保存</a>
+                <a @click="saveRow(record.id)">保存</a>
                 <a-divider type="vertical" />
-                <a @click="cancle(record.key)">取消</a>
+                <a @click="cancle(record.id)">取消</a>
               </span>
             </template>
             <span v-else>
-              <a @click="toggle(record.key)">编辑</a>
+              <a @click="toggle(record.id)">编辑</a>
             </span>
           </template>
         </a-table>
@@ -212,7 +212,7 @@ export default {
         let courseStudent = [];
         let courseItem = {};
         res.result.forEach(element => {
-          courseItem = {}
+          courseItem = {};
           courseItem.course = item.courseName;
           courseItem.role =
             element.studentInfo.role == 1
@@ -233,7 +233,6 @@ export default {
           courseItem.score = element.score;
           courseItem.id = element.id;
           courseStudent.push(courseItem);
-          
         });
         this.courseStudent = courseStudent;
 
@@ -264,7 +263,7 @@ export default {
     },
 
     saveRow(key) {
-      let target = this.courseStudent.filter(item => item.key === key)[0];
+      let target = this.courseStudent.filter(item => item.id === key)[0];
       target.editable = false;
       console.log("target", target);
       this.$Request
@@ -273,17 +272,18 @@ export default {
           score: target.score
         })
         .then(res => {
-          if(res.code == "2001"){
+          if (res.code == "2001") {
             console.log("录入成绩", res);
-            this.$message.success("录入成功")
-          }else{
-             console.log("录入失败", res);
-             this.$message.error("录入失败")
+            this.$message.success("录入成功");
+          } else {
+            console.log("录入失败", res);
+            this.$message.error("录入失败");
           }
         });
     },
     toggle(key) {
-      let target = this.courseStudent.filter(item => item.key === key)[0];
+      let target = this.courseStudent.filter(item => item.id === key)[0];
+      console.log("key", key, target);
       target.editable = !target.editable;
     },
     getRowByKey(key, newData) {
@@ -291,12 +291,12 @@ export default {
       return (newData || data).filter(item => item.key === key)[0];
     },
     cancle(key) {
-      let target = this.courseStudent.filter(item => item.key === key)[0];
+      let target = this.courseStudent.filter(item => item.id === key)[0];
       target.editable = false;
     },
     handleChange(value, key, column) {
       const newData = [...this.courseStudent];
-      const target = newData.filter(item => key === item.key)[0];
+      const target = newData.filter(item => key === item.id)[0];
       if (target) {
         target[column] = value;
         this.courseStudent = newData;
