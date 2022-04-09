@@ -21,7 +21,7 @@
     "date-fns": "^1.29.0",
     "enquire.js": "^2.1.6",
     "mockjs": "^1.0.1-beta3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "pouchdb": "^7.0.0",
     "qs": "^6.9.3",
     "viser-vue": "^2.2.5",
